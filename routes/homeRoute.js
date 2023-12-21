@@ -1,12 +1,9 @@
-// routes/homeRoute.js
-import express from 'express';
-import { getForm, getHome, sendMessage, uploadImage } from '../controllers/homeController.js';
-// import { uploadImage } from '../controllers/imageController.js';
+ import express from 'express';
+import { getForm, getHome, sendMessage, uploadImage } from '../controllers/homeController.js'; 
 
 const router = express.Router();
 
-const homeRoute = (upload) => {
-    console.log(upload.single, 'upload')
+const homeRoute = (upload) => { 
     router.get('/', getHome);
     router.get('/form', getForm);
 
