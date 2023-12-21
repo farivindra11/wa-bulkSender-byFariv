@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WhatsApp Sender</title>
+    <!-- Bootstrap CSS (CDN) -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <!-- Custom CSS -->
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+
+      .container {
+        margin-top: 50px;
+      }
+
+      .card {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .card-header {
+        background-color: #007bff;
+        color: #fff;
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .card-body {
+        padding: 20px;
+      }
+
+      label {
+        font-weight: bold;
+      }
+
+      textarea {
+        resize: vertical;
+      }
+
+      button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      .nav-tabs .nav-item.show .nav-link,
+      .nav-tabs .nav-link.active {
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="card">
+        <div class="card-header">
+          <span style="color: #00ff1a">WhatsApp Sender</span>
+        </div>
+        <div class="card-body">
+          <ul class="nav nav-tabs" id="myTabs">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                id="formTab"
+                data-toggle="tab"
+                href="#formContent"
+                >Kirim Chat</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                id="imageTab"
+                data-toggle="tab"
+                href="#imageContent"
+                >Kirim Gambar</a
+              >
+            </li>
+          </ul>
+          <div class="tab-content">
+            <br />
+            <!-- Form Tab -->
+            <div class="tab-pane fade show active" id="formContent">
+              <form action="/send" method="post">
+                <!-- Nomor HP -->
+                <div class="form-group">
+                  <label for="phone"
+                    >Nomor HP (pisahkan dengan koma untuk multiple)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="phone"
+                    name="phone"
+                    required
+                  />
+                </div>
+
+                <!-- Pesan -->
+                <div class="form-group">
+                  <label for="message">Pesan</label>
+                  <textarea
+                    class="form-control"
+                    id="message"
+                    name="message"
+                    rows="4"
+                    required
+                  ></textarea>
+                </div>
+
+                <!-- Tombol Send -->
+                <button type="submit">Send</button>
+              </form>
+            </div>
+
+            <!-- Form untuk Kirim Gambar -->
+            <div class="tab-pane fade" id="imageContent">
+              <form
+                action="/send-image"
+                method="post"
+                enctype="multipart/form-data"
+              >
+                <!-- Nomor HP -->
+                <div class="form-group">
+                  <label for="phone"
+                    >Nomor HP (pisahkan dengan koma untuk multiple)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="phone"
+                    name="phone"
+                    required
+                  />
+                </div>
+
+                <!-- Kolom Unggah Gambar -->
+                <div class="form-group">
+                  <label for="imageUpload">Unggah Gambar</label>
+                  <input
+                    type="file"
+                    class="form-control-file"
+                    id="imageUpload"
+                    name="imageUpload"
+                    onchange="previewImage(this)"
+                  />
+                  <!-- Ganti maksimal lebar pratinjau menjadi 150px -->
+                  <img
+                    src="#"
+                    id="imagePreview"
+                    style="display: none; max-width: 150px; margin-top: 10px"
+                  />
+                </div>
+
+                <!-- Kolom Caption -->
+                <div class="form-group">
+                  <label for="caption">Caption</label>
+                  <textarea
+                    class="form-control"
+                    id="caption"
+                    name="caption"
+                    rows="2"
+                  ></textarea>
+                </div>
+
+                <!-- Tombol Kirim Gambar -->
+                <button type="submit">Kirim Gambar</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div id="messageStatus" style="color: rgb(53, 215, 90);">
+            status pesan terkirim: <span id="messageCount" style="color: black;"></span>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js (CDN) -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <!-- JavaScript untuk pratinjau gambar -->
+    <script>
+      function previewImage(input) {
+        var fileInput = input;
+        var imagePreview = document.getElementById("imagePreview");
+
+        // Mengecek apakah ada file yang dipilih
+        if (fileInput.files && fileInput.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+            // Menampilkan pratinjau gambar
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = "block";
+          };
+
+          // Membaca data gambar sebagai URL
+          reader.readAsDataURL(fileInput.files[0]);
+        }
+      }
+      console.log('first')
+    </script>
+    
+  </body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "name": "wa-sender",
+  "version": "1.0.0",
+  "description": "wa sender untuk bulk message",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "fariv",
+  "license": "ISC",
+  "dependencies": {
+    "@editorjs/editorjs": "^2.28.2",
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.9",
+    "emoji-picker-element": "^1.21.0",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "qrcode": "^1.5.3",
+    "qrcode-terminal": "^0.12.0",
+    "quill": "^1.3.7",
+    "quill-emoji": "^0.2.0",
+    "socket.io": "^4.7.2",
+    "whatsapp-web.js": "^1.23.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
